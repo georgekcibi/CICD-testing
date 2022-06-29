@@ -31,9 +31,18 @@ environment {
         }
    }
 
+    stage('Tagging image') {
+        steps {
+            sh 'docker tag $registry:latest $registry:$BUILD_NUMBER'
+            withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
+                sh 'docker push $registry:$BUILD_NUMBER'
+            }
+        }
+    }
+
     stage('Cleaning up') {
         steps {
-            sh 'docker rmi $registry:latest'
+            sh 'docker rmi $registry:$BUILD_NUMBER'
         }
     }
  }
