@@ -45,6 +45,13 @@ environment {
             sh 'docker rmi $registry:$BUILD_NUMBER'
         }
     }
+
+    stage ('Kubernetes deployment') {
+    steps {
+        sh 'kubectl apply -f deployment.yaml'
+        sh 'kubectl apply -f service.yaml'
+    }
+   }
  }
 
 }
